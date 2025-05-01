@@ -42,5 +42,5 @@ This is a minimalist Solidity smart contract for a decentralized crowdfunding ap
 This project is licensed under the MIT License.
 ## Contract Details :0xBAcd2ae0a931eBd758771a50d3a2Bf1E2822397a
 
-<img width"1470" alt ="image" src="(https://github.com/user-attachments/assets/12b2f700-a201-4906-b9cc-6f006e786cee)/>
-"
+<img width"1470" alt ="image" src=" ![image](https://github.com/user-attachments/assets/4a2ff405-cfe5-4d2e-9d7a-c3264c045c1f)
+"/>
