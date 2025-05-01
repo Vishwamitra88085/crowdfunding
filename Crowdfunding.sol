@@ -1,47 +1,71 @@
+# Crowdfunding Smart Contract
 
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+A simple Solidity-based crowdfunding contract that enables users to contribute funds toward a project goal with additional functionalities for refunds and contribution tracking.
 
-contract Crowdfunding {
-    address public owner;
-    uint public goal;
-    uint public deadline;
-    uint public raisedAmount;
+---
 
-    mapping(address => uint) public contributions;
+## 🔧 Features
 
-    constructor(uint _goal, uint _durationInDays) {
-        owner = msg.sender;
-        goal = _goal;
-        deadline = block.timestamp + (_durationInDays * 1 days);
-    }
+- Set a **funding goal** and **deadline** upon deployment.
+- Accept **Ether contributions** from participants.
+- Track individual contributions.
+- Allow **owner withdrawal** if the funding goal is met after the deadline.
+- Enable **refunds** if the funding goal is not reached.
+- View contributions made by a specific address.
+- View campaign details.
 
-    function contribute() external payable {
-        require(block.timestamp < deadline, "Campaign ended");
-        require(msg.value > 0, "Contribution must be greater than 0");
+---
 
-        contributions[msg.sender] += msg.value;
-        raisedAmount += msg.value;
-    }
+## 🧾 Functions Overview
 
-    function withdraw() external {
-        require(msg.sender == owner, "Only owner can withdraw");
-        require(block.timestamp >= deadline, "Campaign still active");
-        require(raisedAmount >= goal, "Funding goal not met");
+### `contribute()`
+Contribute Ether to the campaign before the deadline.
 
-        payable(owner).transfer(raisedAmount);
-    }
+### `withdraw()`
+Withdraws funds to the owner if:
+- Deadline has passed.
+- Funding goal has been met.
 
-    function getDetails() external view returns (
-        address, uint, uint, uint, uint, bool
-    ) {
-        return (
-            owner,
-            goal,
-            deadline,
-            raisedAmount,
-            contributions[msg.sender],
-            block.timestamp < deadline
-        );
-    }
-}
+### `refund()`
+Refunds contributors if:
+- Deadline has passed.
+- Funding goal has not been met.
+
+### `getContributorContribution(address _contributor)`
+Returns the total amount contributed by a specific address.
+
+### `getDetails()`
+Returns key campaign information:
+- Owner address.
+- Funding goal.
+- Campaign deadline.
+- Total raised amount.
+- Campaign status (active/inactive).
+
+---
+
+## 🛠 Deployment Instructions
+
+1. Deploy the contract with:
+   - `_goal`: Target funding amount (in wei).
+   - `_durationInDays`: Campaign duration.
+
+2. Interactions:
+   - **Contribute** funds using the `contribute` function.
+   - **Check contributions** using the `getContributorContribution` function.
+   - After the deadline:
+     - If the goal is reached, the owner can `withdraw`.
+     - If the goal is not reached, contributors can `refund`.
+
+---
+
+## ⚠️ Important Notes
+
+- Only the contract owner can call the `withdraw` function.
+- Refunds are only available if the funding goal is not met after the campaign deadline.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
